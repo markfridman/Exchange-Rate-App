@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { format, eachDayOfInterval } from 'date-fns';
+import config from '../config/config';
 
+// Cache object to store API responses
 const cache = new Map();
-
-const APP_ID = '42dc32aec9e743178baae8012688af6c';
 
 export const useExchangeRates = (dateRange) => {
   const [rates, setRates] = useState([]);
@@ -24,12 +24,13 @@ export const useExchangeRates = (dateRange) => {
         const ratesPromises = dates.map(async (date) => {
           const formattedDate = format(date, 'yyyy-MM-dd');
           
+          // Check cache first
           if (cache.has(formattedDate)) {
             return cache.get(formattedDate);
           }
 
           const response = await fetch(
-            `https://openexchangerates.org/api/historical/${formattedDate}.json?app_id=${APP_ID}`
+            `${config.apiUrl}/historical/${formattedDate}.json?app_id=${config.appId}`
           );
 
           if (!response.ok) {

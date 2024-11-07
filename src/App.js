@@ -10,7 +10,7 @@ const Navbar = () => (
   <nav className="bg-white shadow-sm border-b">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between h-16">
-        <div className="items-center">
+        <div className="flex justify-center items-center">
           <Link to="/" className="flex items-center">
             <span className="ml-2 text-xl font-semibold text-gray-900">
               Exchange Rate App
