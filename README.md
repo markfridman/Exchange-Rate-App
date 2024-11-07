@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+# Exchange Rate Viewer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React component that displays historical exchange rates between USD and ILS over a customizable date range, with support for percentage change visualization.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+- 📊 Interactive chart showing USD to ILS exchange rates
+- 📈 Percentage change visualization
+- 📅 Customizable date range (up to 14 days)
+- 💾 API response caching
+- 🔄 Loading states
 
-### `npm start`
+## 🛠️ Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd Exchange-Rate-App
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. Install dependencies:
+```bash
+npm install
+```
 
-### `npm test`
+3. Set up environment variables:
+```bash
+cp .env
+```
+Edit `.env` and add your OpenExchangeRates API key:
+```
+REACT_APP_EXCHANGE_RATE_API_URL=https://openexchangerates.org/api
+REACT_APP_EXCHANGE_RATE_APP_ID=your_api_key_here
+REACT_APP_EXCHANGE_RATE_MAX_DATE_RANGE=14
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📋 Requirements
 
-### `npm run build`
+- Node.js >= 14.0.0
+- npm >= 6.0.0
+- OpenExchangeRates API key (get one at https://openexchangerates.org/signup/free)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🔧 Dependencies
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- react
+- react-dom
+- date-fns
+- recharts
+- shadcn/ui
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🏗️ Project Structure
 
-### `npm run eject`
+```
+src/
+├── components/
+│   └── ExchangeRateViewer/
+│       ├── ExchangeRateViewer.jsx    # Main component
+│       ├── DateRangePicker.jsx       # Date selection component
+│       ├── LoadingSpinner.jsx        # Loading indicator
+│   └── hooks/
+│       └── useExchangeRates.js   # Data fetching logic
+├   ── config/
+│       └── config.js              # Environment configuration
+└── tests/
+    └── ExchangeRateViewer.test.jsx   # Component tests
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 💻 Usage
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```jsx
+import ExchangeRateViewer from './components/ExchangeRateViewer';
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+function App() {
+  return (
+    <div className="container mx-auto p-4">
+      <ExchangeRateViewer />
+    </div>
+  );
+}
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## ⚙️ Configuration
 
-## Learn More
+The component can be configured through environment variables:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- `REACT_APP_EXCHANGE_RATE_API_URL`: Base URL for the OpenExchangeRates API
+- `REACT_APP_EXCHANGE_RATE_APP_ID`: Your OpenExchangeRates API key
+- `REACT_APP_EXCHANGE_RATE_MAX_DATE_RANGE`: Maximum date range in days (default: 14)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🧪 Testing
 
-### Code Splitting
+## 🤝 Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
-### Analyzing the Bundle Size
+## 📝 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-### Making a Progressive Web App
+## 👥 Authors
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Mark Fridman - Initial work
 
-### Advanced Configuration
+## 🙏 Acknowledgments
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- OpenExchangeRates for providing the API
+- Recharts for the charting library
+- shadcn/ui for the UI components
