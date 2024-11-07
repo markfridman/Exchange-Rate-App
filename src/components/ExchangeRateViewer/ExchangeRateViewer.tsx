@@ -5,17 +5,19 @@ import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { DateRangePicker } from './DateRangePicker';
 import { useExchangeRates } from '../../hooks/useExchangeRates';
 import { LoadingSpinner } from './LoadingSpinner';
+import { DateRange, ChartDataPoint } from '../../types/exchangeRate.types';
 
 const MAX_DATE_RANGE_DAYS = 14;
-const ExchangeRateViewer = () => {
-  const [dateRange, setDateRange] = useState({
+
+const ExchangeRateViewer: React.FC = () => {
+  const [dateRange, setDateRange] = useState<DateRange>({
     startDate: subDays(new Date(), MAX_DATE_RANGE_DAYS),
     endDate: new Date()
   });
 
   const { rates, isLoading, error } = useExchangeRates(dateRange);
 
-  const handleDateRangeChange = useCallback((newDate, isStartDate) => {
+  const handleDateRangeChange = useCallback((newDate: Date, isStartDate: boolean): void => {
     const today = new Date();
     
     setDateRange(prevRange => {
@@ -23,28 +25,21 @@ const ExchangeRateViewer = () => {
       let newEndDate = prevRange.endDate;
 
       if (isStartDate) {
-        // Handling start date change
         newStartDate = newDate;
-        
-        // If new start date makes range > 14 days, adjust end date
         const potentialEndDate = addDays(newStartDate, MAX_DATE_RANGE_DAYS - 1);
+        
         if (isAfter(prevRange.endDate, potentialEndDate)) {
           newEndDate = potentialEndDate;
           
-          // If adjusted end date would be after today, set end date to today
-          // and adjust start date backwards
           if (isAfter(newEndDate, today)) {
             newEndDate = today;
             newStartDate = subDays(today, MAX_DATE_RANGE_DAYS - 1);
           }
         }
       } else {
-        // Handling end date change
-        // Ensure end date is not after today
         newEndDate = isAfter(newDate, today) ? today : newDate;
-        
-        // Adjust start date to maintain 14 day maximum
         const potentialStartDate = subDays(newEndDate, MAX_DATE_RANGE_DAYS - 1);
+        
         if (isBefore(prevRange.startDate, potentialStartDate)) {
           newStartDate = potentialStartDate;
         }
@@ -57,11 +52,10 @@ const ExchangeRateViewer = () => {
     });
   }, []);
 
-  // Calculate percentage differences (same as before)
-  const chartData = useMemo(() => {
+  const chartData: ChartDataPoint[] = useMemo(() => {
     if (!rates.length) return [];
     
-    return rates.map((rate, index) => {
+    return rates.map((rate: any, index: number) => {
       const percentChange = index > 0
         ? ((rate.rate - rates[index - 1].rate) / rates[index - 1].rate) * 100
         : 0;
@@ -92,9 +86,9 @@ const ExchangeRateViewer = () => {
       <CardContent className="p-6">
         <DateRangePicker
           dateRange={dateRange}
-          onStartDateChange={(date) => handleDateRangeChange(date, true)}
-          onEndDateChange={(date) => handleDateRangeChange(date, false)}
-          maxEndDate={new Date()} // Today
+          onStartDateChange={(date: Date) => handleDateRangeChange(date, true)}
+          onEndDateChange={(date: Date) => handleDateRangeChange(date, false)}
+          maxEndDate={new Date()}
         />
         
         {isLoading ? (

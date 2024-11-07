@@ -1,7 +1,15 @@
 import React from 'react';
 import { DatePicker } from '../ui/date-picker';
+import { DateRange } from '../../types/exchangeRate.types';
 
-export const DateRangePicker = ({
+interface DateRangePickerProps {
+  dateRange: DateRange;
+  onStartDateChange: (date: Date) => void;
+  onEndDateChange: (date: Date) => void;
+  maxEndDate: Date;
+}
+
+export const DateRangePicker: React.FC<DateRangePickerProps> = ({
   dateRange,
   onStartDateChange,
   onEndDateChange,
@@ -12,6 +20,7 @@ export const DateRangePicker = ({
       <DatePicker
         selected={dateRange.startDate}
         onChange={onStartDateChange}
+        minDate={new Date(-8640000000000000)}
         maxDate={dateRange.endDate}
         placeholderText="Start Date"
         className="w-40"

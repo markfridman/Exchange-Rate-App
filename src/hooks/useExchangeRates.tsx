@@ -1,22 +1,28 @@
 import { useState, useEffect } from 'react';
 import { format, eachDayOfInterval } from 'date-fns';
-import config from '../config/config';
+import { ExchangeRate, DateRange, ApiResponse } from '../types/exchangeRate.types';
 
-// Cache object to store API responses
-const cache = new Map();
+// Cache for API responses
+const cache = new Map<string, ExchangeRate>();
 
-export const useExchangeRates = (dateRange) => {
-  const [rates, setRates] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+interface UseExchangeRatesResult {
+  rates: ExchangeRate[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+export const useExchangeRates = (dateRange: DateRange): UseExchangeRatesResult => {
+  const [rates, setRates] = useState<ExchangeRate[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchRates = async () => {
+    const fetchRates = async (): Promise<void> => {
       try {
         setIsLoading(true);
         setError(null);
 
-        const dates = eachDayOfInterval({
+        const dates: Date[] = eachDayOfInterval({
           start: dateRange.startDate,
           end: dateRange.endDate
         });
@@ -24,26 +30,24 @@ export const useExchangeRates = (dateRange) => {
         const ratesPromises = dates.map(async (date) => {
           const formattedDate = format(date, 'yyyy-MM-dd');
           
-          // Check cache first
           if (cache.has(formattedDate)) {
-            return cache.get(formattedDate);
+            return cache.get(formattedDate)!;
           }
 
           const response = await fetch(
-            `${config.apiUrl}/historical/${formattedDate}.json?app_id=${config.appId}`
+            `https://openexchangerates.org/api/historical/${formattedDate}.json?app_id=${process.env.REACT_APP_EXCHANGE_RATE_APP_ID}`
           );
 
           if (!response.ok) {
             throw new Error('Failed to fetch exchange rates');
           }
 
-          const data = await response.json();
-          const result = {
+          const data: ApiResponse = await response.json();
+          const result: ExchangeRate = {
             date: formattedDate,
             rate: data.rates.ILS
           };
 
-          // Cache the result
           cache.set(formattedDate, result);
           return result;
         });
@@ -51,7 +55,7 @@ export const useExchangeRates = (dateRange) => {
         const results = await Promise.all(ratesPromises);
         setRates(results);
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
         setIsLoading(false);
       }
