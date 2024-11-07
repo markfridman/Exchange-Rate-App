@@ -1,6 +1,21 @@
 import React from 'react';
 
-export const DatePicker = ({ selected, onChange, minDate, maxDate, placeholderText, className }) => {
+interface DatePickerProps {
+  selected: Date;
+  onChange: (date: Date) => void;
+  minDate?: Date;
+  maxDate?: Date;
+  placeholderText?: string;
+  className?: string;
+}
+export const DatePicker: React.FC<DatePickerProps> = ({
+  selected,
+  onChange,
+  minDate,
+  maxDate,
+  placeholderText,
+  className = ""
+}) => {
   return (
     <input
       type="date"
