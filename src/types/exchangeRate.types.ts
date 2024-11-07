@@ -24,3 +24,9 @@ export interface ApiResponse {
     [key: string]: number;
   };
 }
+
+export interface UseExchangeRatesResult {
+  rates: ExchangeRate[];
+  isLoading: boolean;
+  error: string | null;
+}

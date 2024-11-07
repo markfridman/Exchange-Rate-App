@@ -1,16 +1,8 @@
 import { ExchangeRate } from '../types/exchangeRate.types';
-
+import { CacheEntry, CacheData } from 'types/cache';
 const CACHE_KEY = 'exchange_rates_cache';
 const CACHE_EXPIRY_HOURS = 24; // Cache data for 24 hours
 
-interface CacheEntry {
-  timestamp: number;
-  data: ExchangeRate;
-}
-
-interface CacheData {
-  [key: string]: CacheEntry;
-}
 
 class ExchangeRateCache {
   private cache: CacheData;
@@ -44,7 +36,7 @@ class ExchangeRateCache {
   }
 
   get(date: string): ExchangeRate | null {
-    const cacheEntry = this.cache[date];
+    const cacheEntry: CacheEntry = this.cache[date];
     
     if (!cacheEntry) {
       return null;

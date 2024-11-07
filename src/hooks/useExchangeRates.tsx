@@ -2,14 +2,9 @@ import { useState, useEffect } from 'react';
 import { format, eachDayOfInterval } from 'date-fns';
 import { ExchangeRate, DateRange, ApiResponse } from '../types/exchangeRate.types';
 import { exchangeRateCache } from '../services/cache';
+import { UseExchangeRatesResult } from '../types/exchangeRate.types';
 // Cache for API responses
 const cache = new Map<string, ExchangeRate>();
-
-interface UseExchangeRatesResult {
-  rates: ExchangeRate[];
-  isLoading: boolean;
-  error: string | null;
-}
 
 export const useExchangeRates = (dateRange: DateRange): UseExchangeRatesResult => {
   const [rates, setRates] = useState<ExchangeRate[]>([]);
