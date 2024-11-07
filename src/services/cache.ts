@@ -1,7 +1,8 @@
 import { ExchangeRate } from '../types/exchangeRate.types';
 import { CacheEntry, CacheData } from 'types/cache';
+
 const CACHE_KEY = 'exchange_rates_cache';
-const CACHE_EXPIRY_HOURS = 24; // Cache data for 24 hours
+const CACHE_EXPIRY_HOURS = 24;
 
 
 class ExchangeRateCache {

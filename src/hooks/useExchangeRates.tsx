@@ -4,7 +4,6 @@ import { ExchangeRate, DateRange, ApiResponse } from '../types/exchangeRate.type
 import { exchangeRateCache } from '../services/cache';
 import { UseExchangeRatesResult } from '../types/exchangeRate.types';
 // Cache for API responses
-const cache = new Map<string, ExchangeRate>();
 
 export const useExchangeRates = (dateRange: DateRange): UseExchangeRatesResult => {
   const [rates, setRates] = useState<ExchangeRate[]>([]);
